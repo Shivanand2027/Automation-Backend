@@ -1,0 +1,41 @@
+services:
+  # Backend API Service
+  - type: web
+    name: github-automation-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+    healthCheckPath: /health
+    autoDeploy: true
+
+  # Frontend Next.js Service
+  - type: web
+    name: github-automation-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+    autoDeploy: true
