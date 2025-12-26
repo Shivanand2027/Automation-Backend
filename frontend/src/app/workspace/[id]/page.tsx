@@ -51,6 +51,7 @@ export default function WorkspacePage() {
   const params = useParams();
   const router = useRouter();
   const repoId = params.id as string;
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
   const [openFiles, setOpenFiles] = useState<OpenFile[]>([]);
@@ -67,7 +68,7 @@ export default function WorkspacePage() {
     const loadRepository = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3001/api/repositories/${repoId}`, {
+        const response = await fetch(`${API_URL}/api/repositories/${repoId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -95,7 +96,7 @@ export default function WorkspacePage() {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch(
-          `http://localhost:3001/api/workspace/${repoId}/tree`,
+          `${API_URL}/api/workspace/${repoId}/tree`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -141,7 +142,7 @@ export default function WorkspacePage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:3001/api/workspace/${repoId}/file/${encodeURIComponent(path)}`,
+        `${API_URL}/api/workspace/${repoId}/file/${encodeURIComponent(path)}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -193,7 +194,7 @@ export default function WorkspacePage() {
       try {
         const token = localStorage.getItem('token');
         await fetch(
-          `http://localhost:3001/api/workspace/${repoId}/file/${encodeURIComponent(path)}`,
+          `${API_URL}/api/workspace/${repoId}/file/${encodeURIComponent(path)}`,
           {
             method: 'PUT',
             headers: {
@@ -231,7 +232,7 @@ export default function WorkspacePage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:3001/api/agent/${repoId}/plan`,
+        `${API_URL}/api/agent/${repoId}/plan`,
         {
           method: 'POST',
           headers: {
@@ -267,7 +268,7 @@ export default function WorkspacePage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:3001/api/agent/${repoId}/approve/${pendingChange._id}`,
+        `${API_URL}/api/agent/${repoId}/approve/${pendingChange._id}`,
         {
           method: 'POST',
           headers: {
@@ -284,7 +285,7 @@ export default function WorkspacePage() {
         
         // Reload file tree and refresh open files
         const treeResponse = await fetch(
-          `http://localhost:3001/api/workspace/${repoId}/tree`,
+          `${API_URL}/api/workspace/${repoId}/tree`,
           {
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -314,7 +315,7 @@ export default function WorkspacePage() {
     try {
       const token = localStorage.getItem('token');
       await fetch(
-        `http://localhost:3001/api/agent/${repoId}/reject/${pendingChange._id}`,
+        `${API_URL}/api/agent/${repoId}/reject/${pendingChange._id}`,
         {
           method: 'POST',
           headers: {
